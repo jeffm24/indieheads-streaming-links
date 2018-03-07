@@ -4,6 +4,7 @@
 // @version      1.0
 // @description  Adds links to various streaming services (from https://song.link) to the comments page for all [FRESH*] posts in /r/indieheads and /r/hiphopheads.
 // @author       jeffm24
+// @license      MIT
 // @match        https://www.reddit.com/r/indieheads/comments/*
 // @match        https://www.reddit.com/r/hiphopheads/comments/*
 // @grant        GM.xmlHttpRequest
