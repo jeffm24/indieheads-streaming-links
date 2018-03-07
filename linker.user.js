@@ -117,22 +117,26 @@ function getPosition(element) {
 
 async function processTitle(postTitle) {
     const songPrefixMatch = /^\[FRESH( VIDEO)?\] /i,
-          albumPrefixMatch = /^\[FRESH (ALBUM|EP)\] /i;
+        albumPrefixMatch = /^\[FRESH (ALBUM|EP)\] /i;
 
-    let linkPage, songLink;
+    let songLink, regexMatch = false;
 
     // Check if post is for a song or album and get songLink based on that
     if (songPrefixMatch.test(postTitle)) {
+        regexMatch = true;
+        
         const formattedQuery = postTitle.replace(songPrefixMatch, '').replace(/ - | /g, '+'),
-              response = await GM.xmlHttpRequestAsync('GET', `https://song.link/search?q=${formattedQuery}`);
+            response = await GM.xmlHttpRequestAsync('GET', `https://song.link/search?q=${formattedQuery}`);
 
         if (response.songs.length) {
             songLink = response.songs[0].links.songlink;
         }
 
     } else if (albumPrefixMatch.test(postTitle)) {
+        regexMatch = true;
+        
         const formattedQuery = postTitle.replace(albumPrefixMatch, '').replace(/ - | /g, '+'),
-              response = await GM.xmlHttpRequestAsync('GET', `https://song.link/search?q=${formattedQuery}`);
+            response = await GM.xmlHttpRequestAsync('GET', `https://song.link/search?q=${formattedQuery}`);
 
         if (response.albums.length) {
             songLink = response.albums[0].links.songlink;
@@ -211,7 +215,9 @@ async function processTitle(postTitle) {
 
         // Add popup toggle link to post title
         document.querySelector('.top-matter > .title').appendChild(popupToggle);
-    } else {
+        
+    } else if (regexMatch) {
+        // Show not found message if regex matched post title
         document.querySelector('.top-matter > .title').appendChild(
             Object.assign(document.createElement('span'), {
                 id: 'streaming-links-toggle',
