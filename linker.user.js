@@ -20,6 +20,9 @@ GM.addStyle(`
     margin: 0px 10px;
     white-space: nowrap;
 }
+#streaming-links-toggle.none-found {
+    color: red;
+}
 
 #streaming-links-popup {
     position: absolute;
@@ -142,15 +145,14 @@ async function processTitle(postTitle) {
             innerHTML: await GM.xmlHttpRequestAsync('GET', songLink)
         });
 
-        const labelPrefixText = 'Listen to this album on ',
-              spaceMatch = /\s+/g,
-              popup = Object.assign(document.createElement('div'), {
-                  id: 'streaming-links-popup',
-                  className: 'hidden',
-                  innerHTML: '<h2 class="header">All Streaming Links</h2>',
-                  onclick(e) { e.stopImmediatePropagation(); }
-              }),
-              servicesUL = document.createElement('ul');
+        const popup = Object.assign(document.createElement('div'), {
+            id: 'streaming-links-popup',
+            className: 'hidden',
+            innerHTML: '<h2 class="header">All Streaming Links</h2>',
+            onclick(e) { e.stopImmediatePropagation(); }
+        });
+
+        const servicesUL = document.createElement('ul');
 
         // Scrape streaming links from universal link page and add them to popup html
         linkPage.querySelectorAll('[data-nemo^="listen"] > a').forEach((streamingLinkNode) => {
@@ -175,7 +177,7 @@ async function processTitle(postTitle) {
         const popupToggle = Object.assign(document.createElement('a'), {
             id: 'streaming-links-toggle',
             href: '',
-            innerHTML: 'All Streaming Links',
+            innerText: 'All Streaming Links',
             onclick(e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -187,8 +189,6 @@ async function processTitle(postTitle) {
                 popup.classList.remove('hidden');
             }
         });
-
-        const resizeSuper = window.onresize;
 
         let prevWindowWidth = document.body.clientWidth;
 
@@ -211,6 +211,14 @@ async function processTitle(postTitle) {
 
         // Add popup toggle link to post title
         document.querySelector('.top-matter > .title').appendChild(popupToggle);
+    } else {
+        document.querySelector('.top-matter > .title').appendChild(
+            Object.assign(document.createElement('span'), {
+                id: 'streaming-links-toggle',
+                className: 'none-found',
+                innerText: 'No Streaming Links Found :('                
+            })
+        );
     }
 }
 
