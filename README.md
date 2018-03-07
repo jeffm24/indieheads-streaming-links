@@ -6,7 +6,7 @@ in [/r/indieheads](https://reddit.com/r/indieheads) and [/r/hiphopheads](https:/
 
 ![Links Screenshot](https://i.imgur.com/RkLsdbJ.png)
 
-## Usage
+## Installation
 1. Install [Tampermonkey](http://tampermonkey.net/) in your browser of choice.
 2. Install the [script](https://openuserjs.org/scripts/jeffm24/IndieheadsHiphopheads_Streaming_Links) (see [here](https://github.com/OpenUserJS/OpenUserJS.org/wiki/Tampermonkey-for-Chrome#installing-userscripts) for a guide on how to install scripts from OpenUserJS).
 3. Once installed, you should see the 'All Streaming Links' link added next to the post title on all comments pages with [FRESH*] in the post title (if any links were found).
